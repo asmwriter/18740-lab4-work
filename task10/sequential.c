@@ -23,6 +23,4 @@ int main() {
             arr_add /= sum;
         }
     }
-    // printf("sum %d\n", sum);
-    // printf("arr_add %d\n", sum);
 }
