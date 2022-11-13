@@ -56,8 +56,6 @@ void* thread_fn(void* arg)
     int thread_part = tid;
     int temp = 0;
     operate(thread_part);
-
-
     return 0;
 }
 
