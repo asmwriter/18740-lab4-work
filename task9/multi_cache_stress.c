@@ -4,23 +4,17 @@
 #include <pthread.h>
 
 // size of array
-#define MAX 16
+#define MAX 32
 
 // maximum number of threads
 #define MAX_THREAD 4
 
 
 volatile double var1, var2;
-volatile double matA[MAX][MAX];
-volatile double matB[MAX][MAX];
-volatile double matC[MAX][MAX];
+volatile char matA[MAX][MAX];
+volatile char matB[MAX][MAX];
+volatile char matC[MAX][MAX];
 
-
-// void* thread_fn(void* arg)
-// {
-// 	a[0] = a[512]*2;
-//     a[1024] = a[1549]+5;
-// }
 
 void* thread_fn(void* arg)
 {
@@ -29,9 +23,9 @@ void* thread_fn(void* arg)
         for(int i = 0; i<MAX; i++){
             for(int j = 0; j<MAX; j++) {
                 for (int k = 0; k < MAX; k++){
-                    if(k%2 != 0) {
+                    // if(i%4 == 0) {
                         matC[i][j] += matA[i][k] * matB[k][j];
-                    }
+                    // }
                     
                 }
             }
@@ -42,9 +36,9 @@ void* thread_fn(void* arg)
         for(int i = 0; i<MAX; i++){
             for(int j = 0; j<MAX; j++) {
                 for (int k = 0; k < MAX; k++){
-                    if(k%2 == 0) {
+                    // if(i%4 == 1) {
                         matC[i][j] += matA[i][k] * matB[k][j];
-                    } 
+                    // } 
                 }
             }
         }
@@ -54,9 +48,9 @@ void* thread_fn(void* arg)
         for(int i = 0; i<MAX; i++){
             for(int j = 0; j<MAX; j++) {
                 for (int k = 0; k < MAX; k++){
-                    if(k%2 == 0) {
+                    // if(i%4 == 2) {
                         matC[i][j] += matA[i][k] * matB[k][j];
-                    } 
+                    // } 
                 }
             }
         }
@@ -66,9 +60,9 @@ void* thread_fn(void* arg)
         for(int i = 0; i<MAX; i++){
             for(int j = 0; j<MAX; j++) {
                 for (int k = 0; k < MAX; k++){
-                    if(k%2 == 0) {
+                    // if(i%4 == 3) {
                         matC[i][j] += matA[i][k] * matB[k][j];
-                    } 
+                    // } 
                 }
             }
         }
@@ -96,15 +90,15 @@ int main()
     while(1){
         // Creating 4 threads
         int i;
-        // for (i = 0; i < MAX_THREAD; i++)
-            pthread_create(&threads[0], NULL, thread_fn, (void*)&i);
-            pthread_create(&threads[1], NULL, thread_fn, (void*)&i);
-            pthread_create(&threads[2], NULL, thread_fn, (void*)&i);
-            pthread_create(&threads[3], NULL, thread_fn, (void*)&i);
+        for (i = 0; i < MAX_THREAD; i++)
+            pthread_create(&threads[i], NULL, thread_fn, (void*)&i);
+            // pthread_create(&threads[1], NULL, thread_fn, (void*)&i);
+            // pthread_create(&threads[2], NULL, thread_fn, (void*)&i);
+            // pthread_create(&threads[3], NULL, thread_fn, (void*)&i);
 
         // joining 4 threads i.e. waiting for all 4 threads to complete
-        //for (i = 0; i < MAX_THREAD; i++)
-        //    pthread_join(threads[i], NULL);
+        for (i = 0; i < MAX_THREAD; i++)
+           pthread_join(threads[i], NULL);
 
         // adding sum of all 4 parts
         //int total_sum = 0;
