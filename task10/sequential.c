@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-long cnt = 123456789;
+long cnt = 12345678;
 int AR_SIZE = 50;
 
 int main() {
