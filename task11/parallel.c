@@ -48,7 +48,6 @@ int main() {
             // CPU_ZERO(&cpuset);
         }
 
-        // printf("created threads");
         // joining 4 threads i.e. waiting for all 4 threads to complete
         for (i = 0; i < MAX_THREAD; i++)
            pthread_join(threads[i], NULL);
