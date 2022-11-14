@@ -5,7 +5,7 @@
 #include <pthread.h>
 
 // size of array
-#define MAX 600100
+#define MAX 500
 
 // maximum number of threads
 #define MAX_THREAD 4
@@ -30,24 +30,25 @@ void* thread_fn(void* arg) {
 // Driver Code
 int main() {
 
-    cpu_set_t cpuset;
-    CPU_ZERO(&cpuset);
+    // cpu_set_t cpuset;
+    // CPU_ZERO(&cpuset);
     
 
 	pthread_t threads[MAX_THREAD];
 
-    long cnt = 1123456789123445676;
+    long cnt = 12345;
     while(cnt--) {
         // Creating 4 threads
         int i;
         for (i = 0; i < MAX_THREAD; i++) {
-            CPU_SET(i+4, &cpuset);
+            // CPU_SET(i+4, &cpuset);
             pthread_create(&threads[i], NULL, thread_fn, (void*)&i);
-            pthread_setaffinity_np(threads[i], sizeof(cpuset), &cpuset);
-            CPU_CLR(i+4, &cpuset);
-            CPU_ZERO(&cpuset);
+            // pthread_setaffinity_np(threads[i], sizeof(cpuset), &cpuset);
+            // CPU_CLR(i+4, &cpuset);
+            // CPU_ZERO(&cpuset);
         }
 
+        // printf("created threads");
         // joining 4 threads i.e. waiting for all 4 threads to complete
         for (i = 0; i < MAX_THREAD; i++)
            pthread_join(threads[i], NULL);
