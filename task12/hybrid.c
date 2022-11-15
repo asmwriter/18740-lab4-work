@@ -1,8 +1,8 @@
-// CPP Program to find sum of array
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <time.h>
 
 // size of array
 #define MAX 6000
@@ -50,34 +50,38 @@ int main() {
 
     volatile float arr[AR_SIZE];
 
-    // cpu_set_t cpuset;
-    // cpu_set_t  mask;
-    // CPU_ZERO(&cpuset);
-    // CPU_ZERO(&mask);
+    cpu_set_t cpuset;
+    cpu_set_t  mask;
+    CPU_ZERO(&cpuset);
+    CPU_ZERO(&mask);
     
-    // CPU_SET(4, &mask);
-	// sched_setaffinity(0, sizeof(mask), &mask);
-	
-
-
+    CPU_SET(4, &mask);
+	sched_setaffinity(0, sizeof(mask), &mask);
+	 
+    clock_t start = clock();
     long cnt1 = 7000000;
     while(cnt1--) {
         seq_fn(arr);
     }
+    clock_t end = clock();
+    double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("seq part time %f\n", cpu_time_used);
 
     pthread_t threads[MAX_THREAD];
 
-    long cnt2 = 10;
+    long cnt2 = 40;
+
+    clock_t start1 = clock();
     while(cnt2--) {
 
         // Creating 4 threads
         int i;
         for (i = 0; i < MAX_THREAD; i++) {
-            // CPU_SET(i, &cpuset);
+            CPU_SET(i, &cpuset);
             pthread_create(&threads[i], NULL, thread_fn, (void*)&i);
-            // pthread_setaffinity_np(threads[i], sizeof(cpuset), &cpuset);
-            // CPU_CLR(i, &cpuset);
-            // CPU_ZERO(&cpuset);
+            pthread_setaffinity_np(threads[i], sizeof(cpuset), &cpuset);
+            CPU_CLR(i, &cpuset);
+            CPU_ZERO(&cpuset);
         }
 
         // joining 4 threads i.e. waiting for all 4 threads to complete
@@ -85,6 +89,9 @@ int main() {
            pthread_join(threads[i], NULL);
 
     }
+    clock_t end2 = clock();
+    double cpu_time_used2 = ((double) (end2 - start1)) / CLOCKS_PER_SEC;
+    printf("parallel part time %f\n", cpu_time_used2);
 
 	return 0;
 }

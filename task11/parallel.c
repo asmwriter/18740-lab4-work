@@ -1,4 +1,3 @@
-// CPP Program to find sum of array
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,4 +1,3 @@
-// CPP Program to find sum of array
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -71,12 +70,10 @@ int main()
             matB[i][j] = rand() % 10;
         }
     }
-    // int cnt = 2;
-    // printf("#######VERSION 16#############\n");
+    
     while(1){
         part = 0;
         // Creating 4 threads
-        
         for (int i = 0; i < MAX_THREAD; i++) {
             data_arr[i].tid = i;
             pthread_create(&threads[i], NULL, thread_fn, &data_arr[i]);
